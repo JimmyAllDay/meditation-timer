@@ -20,6 +20,8 @@ export default App;
 
 Create a feature to set a 'lead in' time for the timer, to allow the user to get comfortable before commencing practice
 
+Make sure to validate user input for the timer - ie do not let the user input a minus value. This may be sorted out when you change the timer input method to a slider.
+
 Add the ability to play different sounds using selection menus
 
 Include feature to randomise the sounds for the commencement and conclusion of practice

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Button, Container, Modal, Nav, Navbar} from 'react-bootstrap'
 import SoundPicker from './SoundPicker'
-import sounds from './soundArray'
+// import sounds from './soundArray'
 
-const Header = (props) => {
+const Header = () => {
     
-
+    // Hooks used here to reproduce React-bootstrap example code
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -30,8 +30,7 @@ const Header = (props) => {
 
                             <br />
 
-                            <p>Timer start sound:</p> <SoundPicker /> 
-
+                            <p>Timer start sound:</p>  <SoundPicker /> 
 
                             </Modal.Body>
                             <Modal.Footer>

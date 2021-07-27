@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import audioPlayer from './audioPlayer'
+import AudioPlayer from './AudioPlayer'
 import sounds from './soundArray.js'
 
 class Timer extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state = {
             totalSeconds: 0,
             minutes: 0,
@@ -13,24 +13,24 @@ class Timer extends Component {
         this.inputHandler = this.inputHandler.bind(this)
         this.countDown = this.countDown.bind(this)
         this.startTimer = this.startTimer.bind(this)
+        console.log(this.props)
     }
 
     // Get user input
     inputHandler = (event) => {
         this.setState(() => {
             return {
-
                 // Update total seconds as basis of future state changes
                 totalSeconds:(event.target.value * 60)
             }
         })
     }
 
-    // Function to commence countdown
-    startTimer(){
+        // Function to commence countdown
+        startTimer(){
 
         // audioPlayer plays sound to denote commencement of timer 
-        audioPlayer(sounds[1].sample)
+        AudioPlayer(sounds[1].sample)
 
         // setInterval call for state update function
         this.IntervalID = setInterval(this.countDown, 1000)
@@ -44,7 +44,7 @@ class Timer extends Component {
             clearInterval(this.IntervalID)
 
             // play sound to denote conclusion of practice
-            audioPlayer(sounds[3].sample)
+           AudioPlayer(sounds[2].sample)
 
         } else {
 
@@ -80,6 +80,7 @@ class Timer extends Component {
                         }>
                     </input>
                 </form>
+               
                 <br/>
                 <button onClick={this.startTimer}>
                     Meditate

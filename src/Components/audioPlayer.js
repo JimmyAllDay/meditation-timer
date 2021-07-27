@@ -1,8 +1,17 @@
+// eslint-disable-next-line
+import React from 'react'
 
-const audioPlayer = (sample) => {
-    const sound = new Audio(sample)
-    sound.play()
+const AudioPlayer = (props) => {
+
+        console.log(props)
+        const sound = new Audio(props)
+        
+    return (
+            sound.play()
+    )
+
+
 }
 
 
-export default audioPlayer
+export default AudioPlayer

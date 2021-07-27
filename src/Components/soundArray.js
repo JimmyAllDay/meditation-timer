@@ -8,21 +8,25 @@ const sounds = [
     { 
         id: 1,
         name: 'Buddha Bell',
+        value: buddhaBell,
         sample: buddhaBell
     },
     {
         id: 2,
         name: 'Ghost Bell',
+        value: ghostBell,
         sample: ghostBell
     },
     {
         id: 3,
         name: 'Ghost Chant',
+        value: ghostChant,
         sample: ghostChant
     },
     {
         id: 4,
         name: 'Singh Chant',
+        value: singhChant,
         sample: singhChant 
     }
 ]
