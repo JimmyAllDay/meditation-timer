@@ -2,16 +2,14 @@ import React, {Component} from 'react'
 import Option from './Option'
 import AudioPlayer from './AudioPlayer'
 
-class SoundPicker extends Component {
+class ESoundPicker extends Component {
     constructor(props) {
         super (props)
         this.state = {
-            startSound: null
+            endSound: null
         }
-
-        this.samples = props.data.sounds.startSounds.map(sound => 
-        <Option 
-            key={sound.id} 
+        this.samples = props.data.sounds.endSounds.map(sound => 
+        <Option key={sound.id} 
             value={sound.value} 
             name={sound.name} 
             sample={sound.sample}
@@ -25,7 +23,7 @@ class SoundPicker extends Component {
                     selected={this.state.startSound} 
                     onChange={(e) => { 
                         AudioPlayer(e.target.value)
-                        this.props.data.ssoundstateHandler(e.target.value)
+                        this.props.data.esoundstateHandler(e.target.value)
                     }}>
                         { this.samples }
                     </select>
@@ -35,4 +33,4 @@ class SoundPicker extends Component {
     }
 }
 
-export default SoundPicker
+export default ESoundPicker

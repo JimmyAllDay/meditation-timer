@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import AudioPlayer from './AudioPlayer'
-import sounds from './soundArray.js'
 
 class Timer extends Component {
     constructor(props){
@@ -13,7 +12,6 @@ class Timer extends Component {
         this.inputHandler = this.inputHandler.bind(this)
         this.countDown = this.countDown.bind(this)
         this.startTimer = this.startTimer.bind(this)
-        console.log(this.props)
     }
 
     // Get user input
@@ -30,7 +28,7 @@ class Timer extends Component {
         startTimer(){
 
         // audioPlayer plays sound to denote commencement of timer 
-        AudioPlayer(sounds[1].sample)
+        AudioPlayer(this.props.startSound)
 
         // setInterval call for state update function
         this.IntervalID = setInterval(this.countDown, 1000)
@@ -44,7 +42,7 @@ class Timer extends Component {
             clearInterval(this.IntervalID)
 
             // play sound to denote conclusion of practice
-           AudioPlayer(sounds[2].sample)
+           AudioPlayer(this.props.endSound)
 
         } else {
 

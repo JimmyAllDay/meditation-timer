@@ -1,15 +1,56 @@
-
+import React, {Component} from 'react'
 import './App.css';
 import Header from "./Components/Header"
 import Timer from "./Components/Timer"
+import sounds from '../src/Components/soundArray'
 
-function App() {
-  return (
-    <div className="App">
-      <Header />
-      <Timer />
-    </div>
-  );
+class App extends Component{
+      constructor() {
+        super()
+        this.state = {
+          startSound: sounds.startSounds[0].value,
+          endSound: sounds.endSounds[0].value,
+          leadTime: null,
+          totalSeconds: null
+        }
+        this.Sounds = sounds
+        this.ssoundstateHandler = this.ssoundstateHandler.bind(this)
+        this.esoundstateHandler = this.esoundstateHandler.bind(this)
+      }
+
+      ssoundstateHandler(ssound) {
+        this.setState({
+          startSound: ssound,
+        })
+      }
+      esoundstateHandler(esound) {
+        this.setState({
+          endSound: esound,
+        })
+      }
+      timeStateHandler(mins) {
+        this.setState({
+          totalSeconds: (mins * 60)
+        })
+      }
+
+  render() {
+        return (
+          <div className="App">
+            <Header 
+              sounds={this.Sounds}
+              ssoundstateHandler={this.ssoundstateHandler} 
+              esoundstateHandler={this.esoundstateHandler}
+            />
+            <Timer
+              sounds={this.Sounds}
+              startSound={this.state.startSound} 
+              endSound={this.state.endSound}
+              timeStateHandler={this.timeStateHandler}
+            />
+          </div>
+        )
+    }
 }
 
 export default App;
