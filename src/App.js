@@ -123,22 +123,6 @@ class App extends Component{
     }
       }
 
-      resetHandler = () => {
-        clearInterval(this.IntervalID)
-        this.setState(() => {
-          return {
-            time: {
-              totalSeconds: 0,
-              minutes: 0,
-              seconds: 0,
-              leadTime: null
-            },
-            counting: false,
-            countStarted: false
-          }
-        })
-      }
-
       //Check whether countdown should procee
       timerHandler = () => {
         if (this.state.time.totalSeconds > 0 && this.state.counting === false ) {
@@ -149,6 +133,21 @@ class App extends Component{
 
     }
 
+    resetHandler = () => {
+      clearInterval(this.IntervalID)
+      this.setState(() => {
+        return {
+          time: {
+            totalSeconds: 0,
+            minutes: 0,
+            seconds: 0,
+            leadTime: null
+          },
+          counting: false,
+          countStarted: false
+        }
+      })
+    }
 
 
 
