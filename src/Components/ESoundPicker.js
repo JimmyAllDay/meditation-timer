@@ -5,9 +5,9 @@ import AudioPlayer from './AudioPlayer'
 class ESoundPicker extends Component {
     constructor(props) {
         super (props)
-        this.state = {
-            endSound: null
-        }
+        // this.state = {
+        //     endSound: "props"
+        // }
         this.samples = props.data.sounds.endSounds.map(sound => 
         <Option key={sound.id} 
             value={sound.value} 
@@ -20,7 +20,7 @@ class ESoundPicker extends Component {
     return ( <div>
                 <form >
                     <select 
-                    selected={this.state.startSound} 
+                    // selected={this.state.endSound.name} 
                     onChange={(e) => { 
                         AudioPlayer(e.target.value)
                         this.props.data.esoundstateHandler(e.target.value)

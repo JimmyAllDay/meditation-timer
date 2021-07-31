@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {Button, Container, Modal, Nav, Navbar} from 'react-bootstrap'
 import SoundPicker from './SoundPicker'
-import ESoundPicker from './ESoundPicker'
 
 const Header = (props) => {
     // Hooks used here to reproduce React-bootstrap example code
@@ -29,8 +28,8 @@ const Header = (props) => {
 
                             <br />
 
-                            <p>Timer start sound:</p>  <SoundPicker data={props}/> 
-                            <p>Timer finish sound:</p>  <ESoundPicker data={props}/>
+                            <p>Timer start sound:</p>  <SoundPicker sounds={props.sounds.startSounds} handler={() => props.ssoundStateHandler}/>
+                            <p>Timer finish sound:</p> <SoundPicker sounds={props.sounds.endSounds} handler={() => props.esoundStateHandler}/>
                             </Modal.Body>
                             <Modal.Footer>
                             <Button variant="outline-dark" onClick={handleClose}>
