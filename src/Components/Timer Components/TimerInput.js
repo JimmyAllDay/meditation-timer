@@ -1,6 +1,7 @@
 import React from 'react'
 
 const TimerInput = (props) => {
+    console.log(props)
     
     const style = {
         width: '100px'
@@ -17,7 +18,7 @@ const TimerInput = (props) => {
                         placeholder="5 mins" 
                         id="meditate" 
                         onChange={(e) => {
-                                props.timeStateHandler(e)
+                                props.timeHandler(e)
                             }
                         }>
                     </input>

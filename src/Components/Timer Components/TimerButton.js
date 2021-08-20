@@ -1,17 +1,16 @@
 import React from 'react'
 
 const TimerButton = (props) => {
-    console.log(props)
 
     const buttonStyle = {
         width: "80px"
     }
-
+    console.log(props)
     return (
         <div>
             <button 
                 style={buttonStyle} 
-                onClick={props.timerHandler}
+                onClick={props.startStopHandler}
             > 
             {props.counting ? "Stop" : "Meditate" }
             </button>
