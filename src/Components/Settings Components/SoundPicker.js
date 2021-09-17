@@ -20,7 +20,7 @@ class SoundPicker extends Component {
 
     
     render() {
-        console.log(this.props)
+        console.log(this.state.selected)
         
         const samples = this.props.sounds.map(sound => 
             <Option 
@@ -29,17 +29,17 @@ class SoundPicker extends Component {
                 name={sound.name} 
                 sample={sound.sample}
                 />)
-        
+
         return ( 
             <div>
                 <form >
                     <select value={this.state.selected}
-                    onChange={(e) => { 
-                        this.stateHandler(e)
-                        AudioPlayer(e.target.value)
-                        this.props.handler(e.target.name, e.target.value)
-                    }}>
-                        { samples }
+                        onChange={(e) => { 
+                            this.stateHandler(e)
+                            AudioPlayer(e.target.value)
+                            this.props.handler(e.target.name, e.target.value)
+                        }}>
+                            { samples }
                     </select>
                 </form>
             </div>

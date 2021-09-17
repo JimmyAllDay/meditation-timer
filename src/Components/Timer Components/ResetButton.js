@@ -8,7 +8,6 @@ const ResetButton = (props) => {
             </button>
         </div>
     )
-
 }
 
 

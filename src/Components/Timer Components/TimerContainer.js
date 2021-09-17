@@ -184,8 +184,7 @@ class TimerContainer extends Component{
                     counting={this.state.counting}
                     countStarted={this.state.countStarted}
                     startStopHandler={this.timerHandler} //TODO - you need to ammend the name of this method, and the bind statement in state, for constistency
-
-
+                    resetHandler={this.resetHandler}
                   />
                 </Route>
                 <Route exact path='/settings'>
@@ -193,6 +192,7 @@ class TimerContainer extends Component{
                     sounds={this.sounds}
                     sSoundHandler={this.sSoundHandler}
                     eSoundHandler={this.eSoundHandler}
+                    soundState={this.state.startSound}
                   />
                 </Route>
               </Switch>
