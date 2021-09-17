@@ -14,6 +14,9 @@ class SettingsContainer extends Component {
 
             const loving_Kindness = 'May you be happy and free from suffering'
             const empathetic_Joy = `May you be take joy in another's happiness`
+            function voiceAPICall(phrase) {
+            
+            }
 
             return (
                 <div>
@@ -46,7 +49,6 @@ class SettingsContainer extends Component {
                         {/* <option value={compassion}>Compassion</option> */}
                         {/* <option value={equanimity}>Equanimity</option> */}
                         </select>
-
 
                         <h3>Slider for frequency of API calls</h3>
                     </div>
