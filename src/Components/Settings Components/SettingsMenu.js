@@ -1,34 +1,27 @@
-import React, {Component} from 'react'
-import SoundPicker from './SoundPicker'
-import SettingsSlider from './SettingsSlider'
-import SoundToggle from './SoundToggle'
+import React, { Component } from "react";
+import SoundPicker from "./SoundPicker";
+import SettingsSlider from "./SettingsSlider";
+import SoundToggle from "./SoundToggle";
 
 class SettingsMenu extends Component {
+  state = {};
 
-    state = {
+  divStyle = {
+    border: "1px solid grey",
+    borderRadius: "5px",
+    padding: "10px",
+  };
 
-    }
-
-    divStyle = {
-        border: "1px solid grey",
-        borderRadius: "5px",
-        padding: "10px"
-
-    }
-   
-    render(){
-        return(
-      
-
-            
-                <div style={this.divStyle}>
-                    <br/>
-                        <h5>Timer Settings</h5>
-                        <p>Lead in time:</p>
-                        <SettingsSlider />
-                        <p>Play sound at interval:</p>
-                    </div>
-                        /* <SettingsSlider/>
+  render() {
+    return (
+      <div style={this.divStyle}>
+        <br />
+        <h5>Timer Settings</h5>
+        <p>Lead in time:</p>
+        <SettingsSlider />
+        <p>Play sound at interval:</p>
+      </div>
+      /* <SettingsSlider/>
                         {/* <p>Mantra:</p>
                         <SoundToggle/>
 
@@ -54,9 +47,8 @@ class SettingsMenu extends Component {
                     <p>Include randomised long sounds:</p><SoundToggle/>
                     <p>Play only randomised long sounds when finished:</p><SoundToggle/>
                 </div> */
-        )
-    }
-
+    );
+  }
 }
 
-export default SettingsMenu
+export default SettingsMenu;

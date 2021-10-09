@@ -1,41 +1,57 @@
-import React from 'react'
-import TimerInput from './TimerInput'
-import Display from './Display'
-import TimerButton from './TimerButton'
-import ResetButton from './ResetButton'
-import { Link } from 'react-router-dom'
-// import LeadDisplay from './LeadDisplay'
+import React from "react";
+import TimerInput from "./TimerInput";
+import Display from "./Display";
+import LeadDisplay from "./LeadDisplay";
+
+import { Row, Col, Button } from "react-bootstrap";
 
 const Timer = (props) => {
-    console.log(props)
+  console.log(props);
+  return (
+    <Col>
+      <Row className="">
+        <Col className="d-flex justify-content-center p-2">
+          <Display {...props} />
+        </Col>
+      </Row>
 
-        return (
-                <div className="container">
-                     <h2>Timer component</h2>
-                     <div >
+      <Row>
+        <Col className="d-flex justify-content-center">
+          <LeadDisplay />
+        </Col>
+      </Row>
 
-                    <Link to='/settings'>
-                        <button>Settings</button>
-                    </Link>
+      <Row className="row p-4 my-4">
+        <div className="d-flex justify-content-center">
+          <TimerInput
+            timerHandler={props.timerHandler}
+            timeHandler={props.timeHandler}
+            {...props}
+          />
+        </div>
+      </Row>
 
-                     </div>
-                <br/>
-                    <TimerInput 
-                    timeHandler={props.timeHandler}
-                    />
-                <br/>
-                    <TimerButton 
-                        {...props}
-                    />
-                <br/>
-                    <ResetButton resetHandler={props.resetHandler}/>
-                <br/>
-                    {/* <LeadDisplay leadTime={props.leadTime}/> */}
-                <br/>
-                    <Display time={props.time}/>
-                </div>
-        )
+      <Row className="d-flex justify-content-center mb-2">
+        <Button
+          variant="outline-dark"
+          className="btn btn-sm border-3 w-25"
+          onClick={props.startStopHandler}
+        >
+          {props.counting ? "Stop" : "Meditate"}
+        </Button>
+      </Row>
 
-}
+      <Row className="d-flex justify-content-center">
+        <Button
+          variant="outline-dark"
+          className="btn btn-sm border-3 w-25"
+          onClick={props.resetHandler}
+        >
+          Reset
+        </Button>
+      </Row>
+    </Col>
+  );
+};
 
-export default Timer
+export default Timer;

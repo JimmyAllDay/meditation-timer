@@ -1,10 +1,7 @@
-import React from 'react'
-
+import React from "react";
 
 const Option = (props) => {
-    return (
-            <option value={props.value}>{props.name}</option>
-    )
-} 
+  return <option value={props.value}>{props.name}</option>;
+};
 
-export default Option
+export default Option;

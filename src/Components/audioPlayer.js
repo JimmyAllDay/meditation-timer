@@ -1,13 +1,10 @@
 // eslint-disable-next-line
-import React from 'react'
+import React from "react";
 
-const AudioPlayer = (props) => {
-        const sound = new Audio(props)
+const audioPlayer = (props) => {
+  const sound = new Audio(props);
 
-    return (
-            sound.play()
-    )
-}
+  return sound.play();
+};
 
-
-export default AudioPlayer
+export default audioPlayer;
