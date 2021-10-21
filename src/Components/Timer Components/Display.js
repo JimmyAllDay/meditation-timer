@@ -1,7 +1,6 @@
 import React from "react";
 
 const Timer = (props) => {
-  console.log(props);
   return (
     <div>
       <h1 className="display-1">

@@ -1,69 +1,80 @@
-import React, { Component } from "react";
+import React from "react";
 import SoundPicker from "./SoundPicker";
 
-import { Link } from "react-router-dom";
+import { Container, Col, Row } from "react-bootstrap";
 
-class SettingsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function SettingsContainer(props) {
+  console.log(props);
 
-  render() {
-    console.log(this.props);
-
-    const lovingKindness = "May you be happy and free from suffering";
-    const empatheticJoy = `May you be take joy in another's happiness`;
-    // function voiceAPICall(phrase) {
-
-    // }
-
-    return (
-      <div>
-        <div>
-          <h2>Settings Container </h2>
-        </div>
-
-        <Link to="/">
-          <button>Back </button>
-        </Link>
-
-        <div>
-          <h3>Start Sound</h3>
-          <SoundPicker
-            sounds={this.props.sounds.startSounds}
-            handler={this.props.sSoundHandler}
+  return (
+    <Container className="w-75">
+      <Row>
+        <Col className=" d-flex justify-content-center">
+          <h1 className="mt-5 mb-4">Settings</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end ">
+          <h3 className="align-self-center my-3">Lead-in Timer</h3>
+        </Col>
+        <Col className="d-flex justify-content-start ">
+          <input
+            className="w-50 my-3"
+            type="range"
+            min="0"
+            max="30"
+            value="0"
           />
-          <h4>Randomise</h4>
-          <h3>Lead in time</h3>
-        </div>
-
-        <div>
-          <h3>
-            API Input Field (can select pre-existing api calls or enter own)
-          </h3>
-          <select>
-            <option value={lovingKindness}>Loving Kindness</option>
-            <option value={empatheticJoy}>Empathetic Joy</option>
-            {/* <option value={compassion}>Compassion</option> */}
-            {/* <option value={equanimity}>Equanimity</option> */}
-          </select>
-
-          <h3>Slider for frequency of API calls</h3>
-        </div>
-
-        <div>
-          <h3>End Sound</h3>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end ">
+          <h3 className="align-self-center my-3">Start Sound</h3>
+        </Col>
+        <Col className="d-flex justify-content-start ">
           <SoundPicker
-            sounds={this.props.sounds.endSounds}
-            handler={this.props.eSoundHandler}
+            sounds={props.sounds.startSounds}
+            handler={props.sSoundHandler}
           />
-          <h4>Randomise</h4>
-          <h4>Play Long Sounds</h4>
-        </div>
-      </div>
-    );
-  }
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end ">
+          <h5 className="align-self-center my-3">Randomise Start Sound</h5>
+        </Col>
+        <Col className="d-flex justify-content-start ">
+          <input className="my-auto" type="checkbox" />
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end ">
+          <h3 className="align-self-center my-3">End Sound</h3>
+        </Col>
+        <Col className="d-flex justify-content-start ">
+          <SoundPicker
+            sounds={props.sounds.endSounds}
+            handler={props.eSoundHandler}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end ">
+          <h5 className="my-3">Randomise End Sound</h5>
+        </Col>
+        <Col className="d-flex justify-content-start ">
+          <input className="my-auto" type="checkbox" />
+        </Col>
+      </Row>
+      <Row className="mb-5">
+        <Col className="d-flex justify-content-end ">
+          <h5 className="my-3">Play Long End Sounds</h5>
+        </Col>
+        <Col className="d-flex justify-content-start ">
+          <input className="my-auto" type="checkbox" />
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default SettingsContainer;

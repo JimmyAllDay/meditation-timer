@@ -2,13 +2,16 @@ import React from "react";
 import TimerInput from "./TimerInput";
 import Display from "./Display";
 import LeadDisplay from "./LeadDisplay";
+import Lotus from "./Lotus";
 
 import { Row, Col, Button } from "react-bootstrap";
 
 const Timer = (props) => {
-  console.log(props);
   return (
     <Col>
+      <Row className="d-flex justify-content-center m-3">
+        <Lotus />
+      </Row>
       <Row className="">
         <Col className="d-flex justify-content-center p-2">
           <Display {...props} />

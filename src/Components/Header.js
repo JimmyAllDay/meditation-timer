@@ -1,20 +1,24 @@
 import React from "react";
 
 import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
-
-import { Link } from "react-router-dom";
 
 const Header = (props) => {
+  console.log(props);
   return (
     <div>
       <Navbar expand="lg" className="d-flex justify-content-end">
         <div className="me-2">
-          <Link to="/settings">
-            <Button className="btn-dark" type="button">
-              Settings
-            </Button>
-          </Link>
+          <div
+            id="kebab"
+            className="mt-3 me-3"
+            onClick={() => {
+              props.settings();
+            }}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </Navbar>
     </div>

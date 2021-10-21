@@ -1,51 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import Option from "./Option";
 import audioPlayer from "../audioPlayer";
 
-class SoundPicker extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selected: "",
-    };
-    this.stateHander = this.stateHandler.bind(this);
-  }
+function SoundPicker(props) {
+  console.log(props);
 
-  stateHandler(event) {
-    this.setState(() => ({
-      selected: event.target.value,
-    }));
-  }
+  const samples = props.sounds.map((sound) => (
+    <Option
+      key={sound.id}
+      value={sound.value}
+      name={sound.name}
+      sample={sound.sample}
+    />
+  ));
 
-  render() {
-    console.log(this.state.selected);
-
-    const samples = this.props.sounds.map((sound) => (
-      <Option
-        key={sound.id}
-        value={sound.value}
-        name={sound.name}
-        sample={sound.sample}
-      />
-    ));
-
-    return (
-      <div>
-        <form>
-          <select
-            value={this.state.selected}
-            onChange={(e) => {
-              this.stateHandler(e);
-              audioPlayer(e.target.value);
-              this.props.handler(e.target.name, e.target.value);
-            }}
-          >
-            {samples}
-          </select>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className="my-auto">
+      <select
+        className="w-100"
+        value={props.selected}
+        onChange={(e) => {
+          audioPlayer(e.target.value);
+          props.handler(e.target.name, e.target.value);
+        }}
+      >
+        {samples}
+      </select>
+    </div>
+  );
 }
 
 export default SoundPicker;

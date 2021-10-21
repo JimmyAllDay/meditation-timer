@@ -2,21 +2,11 @@ import React, { Component } from "react";
 import Header from "./Components/Header";
 import SettingsContainer from "./Components/Settings Components/SettingsContainer";
 import Timer from "./Components/Timer Components/Timer";
-import Lotus from "./Components/Timer Components/Lotus";
-
-import {
-  BrowserRouter as Router,
-  Route,
-  // Link,
-  // BrowserRouter
-} from "react-router-dom";
 
 import { Container, Row } from "react-bootstrap";
 
 import sounds from "./Components/soundArray";
 import audioPlayer from "./Components/audioPlayer";
-
-import "./App.css";
 
 class App extends Component {
   constructor() {
@@ -31,8 +21,8 @@ class App extends Component {
         sample: sounds.endSounds[0].value,
       },
       time: {
-        totalSeconds: 0,
-        minutes: 0,
+        totalSeconds: 600,
+        minutes: 10,
         seconds: 0,
       },
       leadTime: {
@@ -40,9 +30,8 @@ class App extends Component {
       },
       counting: false,
       countStarted: false,
+      settings: false,
     };
-
-    this.sounds = sounds;
     this.sSoundHandler = this.sSoundHandler.bind(this);
     this.eSoundHandler = this.eSoundHandler.bind(this);
     this.countDown = this.countDown.bind(this);
@@ -51,6 +40,7 @@ class App extends Component {
     this.timerHandler = this.timerHandler.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
     this.leadTimeHandler = this.leadTimeHandler.bind(this);
+    this.settingsHandler = this.settingsHandler.bind(this);
   }
 
   sSoundHandler(name, sample) {
@@ -96,11 +86,9 @@ class App extends Component {
 
   // State maintenance
   countDown() {
-    // check state to determine whether countdown should proceed
     if (this.state.time.totalSeconds === 0) {
       clearInterval(this.IntervalID);
 
-      // play sound to denote conclusion of practice
       audioPlayer(this.state.endSound.sample);
 
       this.setState(() => {
@@ -110,7 +98,6 @@ class App extends Component {
         };
       });
     } else {
-      // Update state using prevState snapshot
       this.setState((prevState) => {
         return {
           time: {
@@ -173,16 +160,21 @@ class App extends Component {
     });
   }
 
+  settingsHandler() {
+    this.setState(() => {
+      return {
+        settings: !this.state.settings,
+      };
+    });
+  }
+
   render() {
     return (
-      <Router>
-        <Header />
+      <div>
+        <Header settings={this.settingsHandler} />
         <Container>
-          <Row className="d-flex justify-content-center m-3">
-            <Lotus />
-          </Row>
           <Row>
-            <Route path="/">
+            {!this.state.settings ? (
               <Timer
                 timerHandler={this.timerHandler}
                 timeHandler={this.timeHandler}
@@ -190,13 +182,17 @@ class App extends Component {
                 resetHandler={this.resetHandler}
                 {...this.state}
               />
-            </Route>
-            <Route path="/settings">
-              <SettingsContainer {...this.state} />
-            </Route>
+            ) : (
+              <SettingsContainer
+                sounds={sounds}
+                sSoundHandler={this.sSoundHandler}
+                eSoundHandler={this.eSoundHandler}
+                {...this.state}
+              />
+            )}
           </Row>
         </Container>
-      </Router>
+      </div>
     );
   }
 }
