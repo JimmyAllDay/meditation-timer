@@ -1,0 +1,154 @@
+/* Hambuger menu button */
+.settings-button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0.2em;
+  right: 0.25em;
+  transition: all 0.25s ease-in-out;
+}
+
+.hamburger-menu {
+  width: 30px;
+  height: 4px;
+  background: rgb(99, 99, 99);
+  border-radius: 3px;
+  transition: all 0.25s ease-in-out;
+}
+.hamburger-menu::before,
+.hamburger-menu::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 4px;
+  background: rgb(99, 99, 99);
+  border-radius: 2px;
+  transition: all 0.25s ease-in-out;
+}
+.hamburger-menu::before {
+  transform: translateY(-9px);
+}
+.hamburger-menu::after {
+  transform: translateY(9px);
+}
+
+/* Hamburger Animation */
+.settings-button.open .hamburger-menu {
+  transform: translateX(-20px);
+  background: transparent;
+}
+.settings-button.open .hamburger-menu::before {
+  transform: rotate(-45deg) translate(15px, 15px);
+}
+.settings-button.open .hamburger-menu::after {
+  transform: rotate(45deg) translate(15px, -15px);
+}
+
+.display-group__main-wrapper {
+  width: 210px;
+}
+.display-group__main-display {
+  font-size: 5em;
+  margin-bottom: 0px;
+}
+
+.display-group__sub-wrapper {
+  width: 200px;
+}
+
+.display-group__sub-display {
+  font-size: 0.9em;
+  margin: 0px 0px 0px 0px;
+}
+
+/* Slider */
+.slider {
+  -webkit-appearance: none;
+  width: 250px;
+  height: 1px;
+  color: #000000;
+  background: #6b6b6b;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  color: #000000;
+  background: #000000;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+// Slider dark mode
+.slider__dark-mode {
+  -webkit-appearance: none;
+  width: 250px;
+  height: 1px;
+  color: #ff6347;
+  background: #ff6347;
+  outline: none;
+}
+.slider__dark-mode::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  color: #ff6347;
+  background: #ff6347;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.soundpicker {
+  height: 2.1em;
+  font-size: 1.1em;
+  border-radius: 4px;
+}
+
+.soundpicker__dark-mode {
+  height: 2.1em;
+  font-size: 1.1em;
+  color: #ff6347;
+  background: #212529;
+  border-radius: 4px;
+}
+.soundpicker__dark-mode:disabled {
+  height: 2.1em;
+  font-size: 1.1em;
+  color: #ff634796;
+  background: #212529;
+  border-radius: 4px;
+}
+
+/* Icons  */
+.lotus {
+  height: 6em;
+  width: auto;
+}
+.play,
+.pause,
+.reset {
+  cursor: pointer;
+  height: 2.5em;
+  width: auto;
+}
+
+.dark-mode-button {
+  position: absolute;
+  top: 2.2em;
+  right: 0.5em;
+}
+
+.dark-mode-button:hover {
+  cursor: pointer;
+}
+
+@import "custom";

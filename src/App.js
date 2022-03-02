@@ -1,57 +1,99 @@
-import React, { Component } from "react";
-import Header from "./Components/Header";
-import SettingsContainer from "./Components/Settings Components/SettingsContainer";
-import Timer from "./Components/Timer Components/Timer";
+/* eslint-disable no-unused-vars */
+import React, { Component, useEffect } from "react";
+import SettingsButton from "./Components/SettingsButton";
+import DarkModeButton from "./Components/DarkModeButton";
+import SettingsContainer from "./Components/settingsComponents/SettingsContainer";
+import Timer from "./Components/timerComponents/Timer";
 
-import { Container, Row } from "react-bootstrap";
+import { sounds, audioPlayer } from "./Components/utils/soundUtils";
 
-import sounds from "./Components/soundArray";
-import audioPlayer from "./Components/audioPlayer";
+import { Container } from "react-bootstrap";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       startSound: {
-        name: sounds.startSounds[0].name,
+        name: sounds.startSounds[0].label,
         sample: sounds.startSounds[0].value,
       },
+      sSoundDisabled: false,
       endSound: {
         name: sounds.endSounds[0].name,
         sample: sounds.endSounds[0].value,
       },
+      eSoundDisabled: false,
+      intervalSound: {
+        name: sounds.startSounds[0].name,
+        sample: sounds.startSounds[0].value,
+      },
+      iSoundDisabled: false,
+      inputtedTime: {
+        totalSeconds: 5,
+        minutes: 0,
+        seconds: 5,
+      },
       time: {
-        totalSeconds: 600,
-        minutes: 10,
-        seconds: 0,
+        totalSeconds: 5,
+        minutes: 0,
+        seconds: 5,
       },
-      leadTime: {
-        leadTime: 0,
-      },
+      leadTime: { inputValue: 0, time: 0 },
+      intervalTime: { inputValue: 5, time: 5 },
       counting: false,
       countStarted: false,
       settings: false,
+      darkMode: false,
     };
     this.sSoundHandler = this.sSoundHandler.bind(this);
+    this.sSoundDisabler = this.sSoundDisabler.bind(this);
     this.eSoundHandler = this.eSoundHandler.bind(this);
+    this.eSoundDisabler = this.eSoundDisabler.bind(this);
+    this.iSoundHandler = this.iSoundHandler.bind(this);
+    this.iSoundDisabler = this.iSoundDisabler.bind(this);
     this.countDown = this.countDown.bind(this);
     this.startCount = this.startCount.bind(this);
-    this.timeHandler = this.timeHandler.bind(this);
-    this.timerHandler = this.timerHandler.bind(this);
+    this.setMainTimeHandler = this.setMainTimeHandler.bind(this);
+    this.startStopHandler = this.startStopHandler.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
-    this.leadTimeHandler = this.leadTimeHandler.bind(this);
+    this.setLeadTimeHandler = this.setLeadTimeHandler.bind(this);
     this.settingsHandler = this.settingsHandler.bind(this);
+    this.playStartSound = this.playStartSound.bind(this);
+    this.setIntervalHandler = this.setIntervalHandler.bind(this);
+    this.darkModeHandler = this.darkModeHandler.bind(this);
   }
 
-  sSoundHandler(name, sample) {
-    this.setState({
-      startSound: {
-        name: name,
-        sample: sample,
-      },
+  // Control state to determine whether settings screen is displayed. Changes boolean value on button click. Passed as prop to SettingsButton.
+  settingsHandler() {
+    this.setState(() => {
+      return {
+        settings: !this.state.settings,
+      };
     });
   }
 
+  // Updates start sound in state. Passed to SettingsContainer
+  sSoundHandler(name, sample) {
+    this.setState(() => {
+      return {
+        startSound: {
+          name: name,
+          sample: sample,
+        },
+      };
+    });
+  }
+
+  // Deactivates startSound SoundPicker component so that user can not update value while sound is randomised
+  sSoundDisabler() {
+    this.setState((prevState) => {
+      return {
+        sSoundDisabled: !prevState.sSoundDisabled,
+      };
+    });
+  }
+
+  // Updates end sound in state. Passed to SettingsContainer
   eSoundHandler(name, sample) {
     this.setState({
       endSound: {
@@ -61,10 +103,66 @@ class App extends Component {
     });
   }
 
-  timeHandler(event) {
+  // Deactivates startSound SoundPicker component so that user can not update value while sound is randomised
+  eSoundDisabler() {
+    this.setState((prevState) => {
+      return {
+        eSoundDisabled: !prevState.eSoundDisabled,
+      };
+    });
+  }
+
+  // Updates interval sound in state. Passed to SettingsContainer
+  iSoundHandler(name, sample) {
+    this.setState({
+      intervalSound: {
+        name: name,
+        sample: sample,
+      },
+    });
+  }
+
+  // Deactivates intervalSound SoundPicker component so that user can not update value while sound is randomised
+  iSoundDisabler() {
+    this.setState((prevState) => {
+      return {
+        iSoundDisabled: !prevState.iSoundDisabled,
+      };
+    });
+  }
+
+  // Returns random sound when sound randomiser is toggled
+  soundRandomiser(onOff, soundArr, sample) {
+    const maxNum = soundArr.length;
+    const randomNum = Math.floor(Math.random() * maxNum);
+    return onOff ? soundArr[randomNum].value : sample;
+  }
+
+  // Plays start sound on button click. Passed to timer component
+  playStartSound(leadTime, countStarted) {
+    if (leadTime === 0 && countStarted === false) {
+      // Play sound to denote commencement of timer.
+      audioPlayer(
+        this.soundRandomiser(
+          this.state.sSoundDisabled,
+          sounds.startSounds,
+          this.state.startSound.sample
+        )
+      );
+    }
+  }
+
+  // Set time for main countdown. Passed to timer component.
+  setMainTimeHandler(event) {
+    // Guard operator prevents changing time after countdown has commenced.
     !this.state.counting &&
       this.setState(() => {
         return {
+          inputtedTime: {
+            totalSeconds: event.target.value * 60,
+            minutes: parseInt(event.target.value, 10),
+            seconds: 0,
+          },
           time: {
             totalSeconds: event.target.value * 60,
             minutes: parseInt(event.target.value, 10),
@@ -74,49 +172,31 @@ class App extends Component {
       });
   }
 
-  leadTimeHandler(event) {
+  // Sets the lead-in time based on input from slider in settings. Int is formatted to double digits in LeadDisplay component
+  setLeadTimeHandler(event) {
     this.setState(() => {
       return {
         leadTime: {
-          leadTime: event.target.value,
+          inputValue: parseInt(event.target.value),
+          time: parseInt(event.target.value),
         },
       };
     });
   }
 
-  // State maintenance
-  countDown() {
-    if (this.state.time.totalSeconds === 0) {
-      clearInterval(this.IntervalID);
-
-      audioPlayer(this.state.endSound.sample);
-
-      this.setState(() => {
-        return {
-          counting: false,
-          countStarted: false,
-        };
-      });
-    } else {
-      this.setState((prevState) => {
-        return {
-          time: {
-            totalSeconds: prevState.time.totalSeconds - 1,
-            minutes: Math.floor((prevState.time.totalSeconds - 1) / 60),
-            seconds: Math.floor((prevState.time.totalSeconds - 1) % 60),
-          },
-        };
-      });
-    }
+  darkModeHandler() {
+    this.setState((prevState) => {
+      return {
+        darkMode: !prevState.darkMode,
+      };
+    });
   }
 
-  // Begin countdown
+  // Begin count down
   startCount() {
-    // audioPlayer plays sound to denote commencement of timer
-    !this.state.countStarted && audioPlayer(this.state.startSound.sample);
-    // setInterval call for state update function
+    // Reduces time state by one count every 1000 milliseconds
     this.IntervalID = setInterval(this.countDown, 1000);
-
+    // Sets state of timer to 'counting'
     this.setState(() => {
       return {
         counting: true,
@@ -125,7 +205,9 @@ class App extends Component {
     });
   }
 
+  // Stop count down after it has started and before time state has reached zero
   stopCount() {
+    // Check whether timer is currently counting down. If it is, set time state to 'not counting'
     if (this.state.counting && this.state.countStarted) {
       clearInterval(this.IntervalID);
       this.setState(() => {
@@ -136,8 +218,8 @@ class App extends Component {
     }
   }
 
-  // Check whether countdown should proceed
-  timerHandler() {
+  // Check whether main countdown should proceed, and prevent multiple calls to commence countdown. If all of these conditions are met, toggle button between start and stop functions
+  startStopHandler() {
     if (this.state.time.totalSeconds > 0 && this.state.counting === false) {
       this.startCount();
     } else {
@@ -145,14 +227,23 @@ class App extends Component {
     }
   }
 
+  // Reset time state on button click
   resetHandler() {
     clearInterval(this.IntervalID);
     this.setState(() => {
       return {
         time: {
-          totalSeconds: 0,
-          minutes: 0,
-          seconds: 0,
+          totalSeconds: this.state.inputtedTime.totalSeconds,
+          minutes: this.state.inputtedTime.minutes,
+          seconds: this.state.inputtedTime.seconds,
+        },
+        leadTime: {
+          inputValue: this.state.leadTime.inputValue,
+          time: this.state.leadTime.inputValue,
+        },
+        intervalTime: {
+          inputValue: this.state.intervalTime.inputValue,
+          time: this.state.intervalTime.inputValue,
         },
         counting: false,
         countStarted: false,
@@ -160,65 +251,171 @@ class App extends Component {
     });
   }
 
-  settingsHandler() {
+  // Update state interval timer variables. Passed as prop to settings container.
+  setIntervalHandler(e) {
     this.setState(() => {
       return {
-        settings: !this.state.settings,
+        intervalTime: {
+          inputValue: parseInt(e.target.value),
+          time: parseInt(e.target.value),
+        },
       };
     });
   }
 
+  // Maintains timer state
+  countDown() {
+    // Check if time state has counted down to zero. If it has, do the following:
+    if (this.state.time.totalSeconds === 0) {
+      console.log("timer");
+      // Call function to play end sound
+      audioPlayer(
+        this.soundRandomiser(
+          this.state.eSoundDisabled,
+          sounds.endSounds,
+          this.state.endSound.sample
+        )
+      );
+      // Update state variables to end count down
+      this.setState(() => {
+        return {
+          counting: false,
+          countStarted: false,
+        };
+      });
+      this.resetHandler();
+    }
+
+    // Check if lead in time has counted down and play start sound to denote commencement of practice
+    // TODO: The below if statement is a hacky solution. Consider changing it.
+    if (this.state.leadTime.time === 1) {
+      audioPlayer(this.state.startSound.sample);
+    }
+
+    // If time state has not hit zero, do the following:
+    // Check whether there is leadTime remaining
+    if (this.state.leadTime.time > 0) {
+      this.setState((prevState) => {
+        return {
+          leadTime: {
+            inputValue: prevState.leadTime.inputValue,
+            time: prevState.leadTime.time - 1,
+          },
+        };
+      });
+    } else {
+      // Decrement time state by one count
+      this.setState((prevState) => {
+        return {
+          time: {
+            totalSeconds: prevState.time.totalSeconds - 1,
+            minutes: Math.floor((prevState.time.totalSeconds - 1) / 60),
+            seconds: Math.floor((prevState.time.totalSeconds - 1) % 60),
+          },
+        };
+      });
+      if (this.state.intervalTime.inputValue > 0) {
+        // Decrement interval timer by one count
+        if (this.state.intervalTime.time > 0) {
+          this.setState((prevState) => {
+            return {
+              intervalTime: {
+                inputValue: prevState.intervalTime.inputValue,
+                time: prevState.intervalTime.time - 1,
+              },
+            };
+          });
+        }
+        // ? the block below handles the interval timing function. Could this functionality be better handled by using setInterval?
+        if (this.state.intervalTime.time === 0) {
+          console.log("interval");
+          audioPlayer(
+            this.soundRandomiser(
+              this.state.iSoundDisabled,
+              sounds.startSounds,
+              this.state.intervalSound.sample
+            )
+          );
+
+          this.setState((prevState) => {
+            return {
+              intervalTime: {
+                inputValue: prevState.intervalTime.inputValue,
+                time: prevState.intervalTime.inputValue,
+              },
+            };
+          });
+        }
+      }
+    }
+  }
+
   render() {
     return (
-      <div>
-        <Header settings={this.settingsHandler} />
-        <Container>
-          <Row>
-            {!this.state.settings ? (
-              <Timer
-                timerHandler={this.timerHandler}
-                timeHandler={this.timeHandler}
-                startStopHandler={this.timerHandler}
-                resetHandler={this.resetHandler}
-                {...this.state}
-              />
-            ) : (
-              <SettingsContainer
-                sounds={sounds}
-                sSoundHandler={this.sSoundHandler}
-                eSoundHandler={this.eSoundHandler}
-                {...this.state}
-              />
-            )}
-          </Row>
-        </Container>
-      </div>
+      <Container
+        fluid
+        className={`h-100 p-0 d-flex flex-column 
+        ${this.state.darkMode ? "bg-dark text-warning" : "bg-light"}
+        `}
+      >
+        <SettingsButton
+          settings={this.state.settings}
+          settingsHandler={this.settingsHandler}
+        />
+        <DarkModeButton
+          darkMode={this.state.darkMode}
+          darkModeHandler={this.darkModeHandler}
+        />
+
+        {!this.state.settings ? (
+          <Timer
+            setMainTimeHandler={this.setMainTimeHandler}
+            startStopHandler={this.startStopHandler}
+            resetHandler={this.resetHandler}
+            playStartSound={this.playStartSound}
+            leadTime={this.state.leadTime.time}
+            intervalTime={this.state.intervalTime}
+            counting={this.state.counting}
+            countStarted={this.state.countStarted}
+            minutes={this.state.time.minutes}
+            seconds={this.state.time.seconds}
+            darkMode={this.state.darkMode}
+          />
+        ) : (
+          <SettingsContainer
+            sounds={sounds}
+            sSoundHandler={this.sSoundHandler}
+            sSoundDisabled={this.state.sSoundDisabled}
+            sSoundDisabler={this.sSoundDisabler}
+            eSoundHandler={this.eSoundHandler}
+            eSoundDisabler={this.eSoundDisabler}
+            eSoundDisabled={this.state.eSoundDisabled}
+            iSoundHandler={this.iSoundHandler}
+            iSoundDisabled={this.state.iSoundDisabled}
+            iSoundDisabler={this.iSoundDisabler}
+            setLeadTimeHandler={this.setLeadTimeHandler}
+            setIntervalHandler={this.setIntervalHandler}
+            leadInTime={this.state.leadTime.inputValue}
+            startSound={this.state.startSound}
+            endSound={this.state.endSound}
+            intervalTime={this.state.intervalTime.inputValue}
+            intervalSound={this.state.intervalSound}
+            darkMode={this.state.darkMode}
+            darkModeHandler={this.darkModeHandler}
+          />
+        )}
+      </Container>
     );
   }
 }
 
 export default App;
 
-// Feature set to build out:
-
 /* 
-
-Dark Mode
-
-Feature to set a 'lead in' time for the timer, to allow the user to get comfortable before commencing practice
-
-Include feature to randomise the sounds for the commencement and conclusion of practice
-
-Include a feature to toggle whether the randomiser plays long sounds (ie melodies and so on) or short sounds (such as bells and single hit chimes)
-
-Add a text display that shows a 'mantra' the meditator can recite silently during their meditation practice.
-This will aid in the use of meditation modalities such as loving kindness.
-
-Add an input field for the user to capture 'mantras' they wish to retain and use in their meditation practices.
-Then, make API call to google voice api at regular intervals, to remind people of what it is they're meditating about.
-
-Add a stylised input interface for the time setting input - for example, you could add a slider with animations, etc.
-
-Make the app into a chrome browser extension with an alarm function to remind the user when to take breaks to meditate
-
+TODO: Fix alignment of elements on settings screen, including for responsive layout.
+TODO: If interval is set, when timer reaches 0, the interval sound plays as well as the end sound. Address this. 
+TODO: Add tooltips to interface and settings components.
+TODO: Add more sounds to start sounds and end sounds options. Ensure sounds are small, compressed files.
+TODO: Add 'slide in' effect to settings screen, activated on button click.
+TODO: write tests.
 */

@@ -1,0 +1,8 @@
+// Customised colors
+$theme-colors: (
+  "info": #6b6b6b,
+  "warning": tomato,
+);
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";
