@@ -29,17 +29,17 @@ class App extends Component {
       },
       iSoundDisabled: false,
       inputtedTime: {
-        totalSeconds: 6,
-        minutes: 0,
-        seconds: 6,
+        totalSeconds: 600,
+        minutes: 10,
+        seconds: 0,
       },
       time: {
-        totalSeconds: 6,
-        minutes: 0,
-        seconds: 6,
+        totalSeconds: 600,
+        minutes: 10,
+        seconds: 0,
       },
-      leadTime: { inputValue: 1, time: 1 },
-      intervalTime: { inputValue: 3, time: 3 },
+      leadTime: { inputValue: 3, time: 3 },
+      intervalTime: { inputValue: 120, time: 120 },
       counting: false,
       countStarted: false,
       settings: false,
@@ -63,6 +63,8 @@ class App extends Component {
     this.setIntervalHandler = this.setIntervalHandler.bind(this);
     this.darkModeHandler = this.darkModeHandler.bind(this);
   }
+
+  // ------------- UPDATE UI HANDLERS -----------------------
 
   // Control state to determine whether settings screen is displayed. Changes boolean value on button click. Passed as prop to SettingsButton.
   settingsHandler() {
@@ -185,6 +187,7 @@ class App extends Component {
     });
   }
 
+  // Toggles darkmode boolean value, to set darkmode at button click. Passed to settings container and DarkModeButton component.
   darkModeHandler() {
     this.setState((prevState) => {
       return {
@@ -193,9 +196,11 @@ class App extends Component {
     });
   }
 
+  // ------------- COUNT DOWN LOGIC -----------------------
+
   // Begin count down
   startCount() {
-    // triggers reduce time state by one count every 1000 milliseconds
+    // triggers reduction in time state by one count every 1000 milliseconds
     this.IntervalID = setInterval(() => {
       this.countDownController();
     }, 1000);
@@ -221,7 +226,7 @@ class App extends Component {
     }
   }
 
-  // Check whether main countdown should proceed on button click, and prevent multiple calls to commence countdown. If all of these conditions are met, toggle button between start and stop functions
+  // Check whether main countdown should proceed on button click, and prevent multiple calls to commence countdown. If all  conditions are met, toggles play button between start and pause functions
   startStopHandler() {
     if (this.state.time.totalSeconds > 0 && this.state.counting === false) {
       this.startCount();
@@ -320,6 +325,7 @@ class App extends Component {
     }
   }
 
+  // Controls countdown function for lead in timer. Called in countDownController function.
   leadInCountDown() {
     if (this.state.leadTime.time === 1) {
       // Play start sound to denote commencement of practice
@@ -350,9 +356,8 @@ class App extends Component {
     }
   }
 
-  // Handles interval counting logic
+  // Handles interval counting logic. Called in CountDownController function.
   intervalCountDown() {
-    // ? the block below handles the interval timing function. Could this functionality be better handled by using setInterval?
     if (this.state.intervalTime.time === 1) {
       audioPlayer(
         this.soundRandomiser(
@@ -383,6 +388,7 @@ class App extends Component {
     }
   }
 
+  // Handles control flow for lead in, interval and main count down functions. Called in StartCount function.
   countDownController() {
     if (this.state.leadTime.time > 0) {
       this.leadInCountDown();
@@ -454,8 +460,10 @@ class App extends Component {
 export default App;
 
 /* 
-TODO: Add more sounds to start sounds and end sounds options. Ensure sounds are small, compressed files.
+TODO: When user selects a new sound in the settings tab, the previous sound continues to play. Address this. Probably requires passing array to audio player, looping through array to find desired sound, and using the builtin pause method to pause non-playing sounds.
+TODO: Fix logic for SoundPicker component - makes use of unnecessary 'data-label' code. State can also probably be refactored to remove the sample name.
 TODO: Fix alignment of elements on settings screen, including for responsive layout.
 TODO: Add 'slide in' effect to settings screen, activated on button click.
+TODO: Refactor to align with clean code principles.
 TODO: write tests.
 */
