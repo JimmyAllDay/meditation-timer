@@ -30,8 +30,6 @@ function SettingsContainer(props) {
     darkModeHandler,
   } = props;
 
-  console.log(intervalSound);
-
   const [leadIn, setLeadIn] = useState(0);
   const [interval, setInterval] = useState(0);
 

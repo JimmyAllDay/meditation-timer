@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
 
 import { Icon } from "@iconify/react";
 
@@ -13,6 +13,7 @@ export default function TimerControls(props) {
     countStarted,
     resetHandler,
   } = props;
+
   return (
     <Container fluid>
       <Row>
@@ -38,6 +39,7 @@ export default function TimerControls(props) {
               />
             )}
           </div>
+
           <div className="align-self-center mt-2">
             <Icon
               icon="radix-icons:reset"

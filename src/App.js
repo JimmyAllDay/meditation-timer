@@ -29,17 +29,17 @@ class App extends Component {
       },
       iSoundDisabled: false,
       inputtedTime: {
-        totalSeconds: 5,
+        totalSeconds: 6,
         minutes: 0,
-        seconds: 5,
+        seconds: 6,
       },
       time: {
-        totalSeconds: 5,
+        totalSeconds: 6,
         minutes: 0,
-        seconds: 5,
+        seconds: 6,
       },
-      leadTime: { inputValue: 0, time: 0 },
-      intervalTime: { inputValue: 5, time: 5 },
+      leadTime: { inputValue: 1, time: 1 },
+      intervalTime: { inputValue: 3, time: 3 },
       counting: false,
       countStarted: false,
       settings: false,
@@ -56,6 +56,7 @@ class App extends Component {
     this.setMainTimeHandler = this.setMainTimeHandler.bind(this);
     this.startStopHandler = this.startStopHandler.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
+    this.timeEndHandler = this.timeEndHandler.bind(this);
     this.setLeadTimeHandler = this.setLeadTimeHandler.bind(this);
     this.settingsHandler = this.settingsHandler.bind(this);
     this.playStartSound = this.playStartSound.bind(this);
@@ -194,8 +195,10 @@ class App extends Component {
 
   // Begin count down
   startCount() {
-    // Reduces time state by one count every 1000 milliseconds
-    this.IntervalID = setInterval(this.countDown, 1000);
+    // triggers reduce time state by one count every 1000 milliseconds
+    this.IntervalID = setInterval(() => {
+      this.countDownController();
+    }, 1000);
     // Sets state of timer to 'counting'
     this.setState(() => {
       return {
@@ -218,7 +221,7 @@ class App extends Component {
     }
   }
 
-  // Check whether main countdown should proceed, and prevent multiple calls to commence countdown. If all of these conditions are met, toggle button between start and stop functions
+  // Check whether main countdown should proceed on button click, and prevent multiple calls to commence countdown. If all of these conditions are met, toggle button between start and stop functions
   startStopHandler() {
     if (this.state.time.totalSeconds > 0 && this.state.counting === false) {
       this.startCount();
@@ -251,6 +254,30 @@ class App extends Component {
     });
   }
 
+  // Set time state when countdown ends
+  timeEndHandler() {
+    clearInterval(this.IntervalID);
+    this.setState(() => {
+      return {
+        time: {
+          totalSeconds: 0,
+          minutes: 0,
+          seconds: 0,
+        },
+        leadTime: {
+          inputValue: this.state.leadTime.inputValue,
+          time: 0,
+        },
+        intervalTime: {
+          inputValue: this.state.intervalTime.inputValue,
+          time: 0,
+        },
+        counting: false,
+        countStarted: false,
+      };
+    });
+  }
+
   // Update state interval timer variables. Passed as prop to settings container.
   setIntervalHandler(e) {
     this.setState(() => {
@@ -266,8 +293,11 @@ class App extends Component {
   // Maintains timer state
   countDown() {
     // Check if time state has counted down to zero. If it has, do the following:
-    if (this.state.time.totalSeconds === 0) {
-      console.log("timer");
+    if (this.state.time.totalSeconds === 1) {
+      // Stopcounting
+      clearInterval(this.IntervalID);
+      // Update state variables to end count down
+      this.timeEndHandler();
       // Call function to play end sound
       audioPlayer(
         this.soundRandomiser(
@@ -276,33 +306,6 @@ class App extends Component {
           this.state.endSound.sample
         )
       );
-      // Update state variables to end count down
-      this.setState(() => {
-        return {
-          counting: false,
-          countStarted: false,
-        };
-      });
-      this.resetHandler();
-    }
-
-    // Check if lead in time has counted down and play start sound to denote commencement of practice
-    // TODO: The below if statement is a hacky solution. Consider changing it.
-    if (this.state.leadTime.time === 1) {
-      audioPlayer(this.state.startSound.sample);
-    }
-
-    // If time state has not hit zero, do the following:
-    // Check whether there is leadTime remaining
-    if (this.state.leadTime.time > 0) {
-      this.setState((prevState) => {
-        return {
-          leadTime: {
-            inputValue: prevState.leadTime.inputValue,
-            time: prevState.leadTime.time - 1,
-          },
-        };
-      });
     } else {
       // Decrement time state by one count
       this.setState((prevState) => {
@@ -314,39 +317,78 @@ class App extends Component {
           },
         };
       });
-      if (this.state.intervalTime.inputValue > 0) {
-        // Decrement interval timer by one count
-        if (this.state.intervalTime.time > 0) {
-          this.setState((prevState) => {
-            return {
-              intervalTime: {
-                inputValue: prevState.intervalTime.inputValue,
-                time: prevState.intervalTime.time - 1,
-              },
-            };
-          });
-        }
-        // ? the block below handles the interval timing function. Could this functionality be better handled by using setInterval?
-        if (this.state.intervalTime.time === 0) {
-          console.log("interval");
-          audioPlayer(
-            this.soundRandomiser(
-              this.state.iSoundDisabled,
-              sounds.startSounds,
-              this.state.intervalSound.sample
-            )
-          );
+    }
+  }
 
-          this.setState((prevState) => {
-            return {
-              intervalTime: {
-                inputValue: prevState.intervalTime.inputValue,
-                time: prevState.intervalTime.inputValue,
-              },
-            };
-          });
-        }
-      }
+  leadInCountDown() {
+    if (this.state.leadTime.time === 1) {
+      // Play start sound to denote commencement of practice
+      audioPlayer(
+        this.soundRandomiser(
+          this.state.sSoundDisabled,
+          sounds.startSounds,
+          this.state.startSound.sample
+        )
+      );
+      this.setState((prevState) => {
+        return {
+          leadTime: {
+            inputValue: prevState.leadTime.inputValue,
+            time: prevState.leadTime.time - 1,
+          },
+        };
+      });
+    } else {
+      this.setState((prevState) => {
+        return {
+          leadTime: {
+            inputValue: prevState.leadTime.inputValue,
+            time: prevState.leadTime.time - 1,
+          },
+        };
+      });
+    }
+  }
+
+  // Handles interval counting logic
+  intervalCountDown() {
+    // ? the block below handles the interval timing function. Could this functionality be better handled by using setInterval?
+    if (this.state.intervalTime.time === 1) {
+      audioPlayer(
+        this.soundRandomiser(
+          this.state.iSoundDisabled,
+          sounds.startSounds,
+          this.state.intervalSound.sample
+        )
+      );
+      this.setState((prevState) => {
+        return {
+          intervalTime: {
+            inputValue: prevState.intervalTime.inputValue,
+            time: prevState.intervalTime.inputValue,
+          },
+        };
+      });
+    } else {
+      // Decrement interval timer by one count
+      this.state.intervalTime.time !== 0 &&
+        this.setState((prevState) => {
+          return {
+            intervalTime: {
+              inputValue: prevState.intervalTime.inputValue,
+              time: prevState.intervalTime.time - 1,
+            },
+          };
+        });
+    }
+  }
+
+  countDownController() {
+    if (this.state.leadTime.time > 0) {
+      this.leadInCountDown();
+    } else {
+      this.countDown();
+      this.intervalCountDown();
     }
   }
 
@@ -412,10 +454,8 @@ class App extends Component {
 export default App;
 
 /* 
-TODO: Fix alignment of elements on settings screen, including for responsive layout.
-TODO: If interval is set, when timer reaches 0, the interval sound plays as well as the end sound. Address this. 
-TODO: Add tooltips to interface and settings components.
 TODO: Add more sounds to start sounds and end sounds options. Ensure sounds are small, compressed files.
+TODO: Fix alignment of elements on settings screen, including for responsive layout.
 TODO: Add 'slide in' effect to settings screen, activated on button click.
 TODO: write tests.
 */
