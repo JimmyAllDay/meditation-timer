@@ -1,19 +1,19 @@
 {
-  "Homepage": "https://jimmyallday.github.io/meditation-timer/",
+  "homepage": "https://jimmyallday.github.io/meditation-timer/",
   "name": "meditation-timer",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.1.1",
+    "npm-force-resolutions": "^0.0.10",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
     "react-dom": "^17.0.2",
     "react-ios-switch": "^0.1.19",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
     "sass": "^1.49.9",
     "web-vitals": "^1.1.2"
   },
@@ -26,6 +26,7 @@
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier src test --check",
     "prettier:fix": "npm run prettier -- --write",
+    "preinstall": "npx npm-force-resolutions",
     "format": "npm run prettier:fix && npm run lint:fix",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -55,6 +56,11 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.29.2",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "postcss-custom-properties": "^12.1.4",
+    "react-scripts": "^5.0.0"
+  },
+  "resolutions": {
+    "react-scripts/postcss-preset-env/postcss-custom-properties": "^10.0.0"
   }
 }

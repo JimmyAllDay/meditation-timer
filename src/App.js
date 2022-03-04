@@ -460,6 +460,7 @@ class App extends Component {
 export default App;
 
 /* 
+TODO: Browser compatibility: Safari not playing sounds and is styled inconsistently, Firefox is styled inconsistently.
 TODO: When user selects a new sound in the settings tab, the previous sound continues to play. Address this. Probably requires passing array to audio player, looping through array to find desired sound, and using the builtin pause method to pause non-playing sounds.
 TODO: Fix logic for SoundPicker component - makes use of unnecessary 'data-label' code. State can also probably be refactored to remove the sample name.
 TODO: Fix alignment of elements on settings screen, including for responsive layout.
