@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fbabe790.css",
+    "main.js": "/static/js/main.0ea53c9f.js",
+    "static/js/787.65b0740e.chunk.js": "/static/js/787.65b0740e.chunk.js",
+    "static/media/Ghost-Chant.mp3": "/static/media/Ghost-Chant.a04e920e02881a9e18ba.mp3",
+    "static/media/Wind-Chimes3.mp3": "/static/media/Wind-Chimes3.2bc188544702ee67b082.mp3",
+    "static/media/Wind-Chimes1.mp3": "/static/media/Wind-Chimes1.12785c6fc2d6776aba69.mp3",
+    "static/media/Sitar-1.mp3": "/static/media/Sitar-1.3bd74dfd63f57b1510c9.mp3",
+    "static/media/Sitar-2.mp3": "/static/media/Sitar-2.9ef5f1039986760441aa.mp3",
+    "static/media/Wind-Chimes2.mp3": "/static/media/Wind-Chimes2.0716916418303cdfab20.mp3",
+    "static/media/Singing-Bowl4.mp3": "/static/media/Singing-Bowl4.b36ecbbbd29fc85c7c8c.mp3",
+    "static/media/Singing-Bowl1.mp3": "/static/media/Singing-Bowl1.60af7946a6322c40b676.mp3",
+    "static/media/Buddhist-Bell.mp3": "/static/media/Buddhist-Bell.6e99b4d1b80d8c50bd92.mp3",
+    "static/media/Singing-Bowl2.mp3": "/static/media/Singing-Bowl2.82b4e4e1ef315265729c.mp3",
+    "static/media/Wind-Chimes4.mp3": "/static/media/Wind-Chimes4.f6dccd13fffce340c27d.mp3",
+    "static/media/Ghost-Bell.mp3": "/static/media/Ghost-Bell.fc6bfe5a561c33e0b106.mp3",
+    "static/media/Singing-Bowl3.mp3": "/static/media/Singing-Bowl3.3c71b43da50f12a5cbcb.mp3",
+    "static/media/High-Bell.mp3": "/static/media/High-Bell.24aa86e642f7f5c37fe8.mp3",
+    "index.html": "/index.html",
+    "main.fbabe790.css.map": "/static/css/main.fbabe790.css.map",
+    "main.0ea53c9f.js.map": "/static/js/main.0ea53c9f.js.map",
+    "787.65b0740e.chunk.js.map": "/static/js/787.65b0740e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fbabe790.css",
+    "static/js/main.0ea53c9f.js"
+  ]
+}
